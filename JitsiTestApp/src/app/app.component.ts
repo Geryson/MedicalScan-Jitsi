@@ -15,6 +15,8 @@ export class AppComponent implements AfterViewInit {
 
   domain = 'meet.jit.si';
 
+  api: any = null;
+
   ngAfterViewInit(): void {
     const options = {
       roomName: 'MedicalScanJitsi',
@@ -23,18 +25,28 @@ export class AppComponent implements AfterViewInit {
       parentNode: document.getElementById('meet'),
       lang: 'hu'
     }
-    const api = new JitsiMeetExternalAPI(this.domain, options);
+    this.api = new JitsiMeetExternalAPI(this.domain, options);
 
-    api.addListener('browserSupport', (status: any) => {
+    this.api!.addListener('browserSupport', (status: any) => {
       console.log(status);
     });
 
-    api.addListener('mouseEnter', (event: any) => {
+    this.api!.addListener('mouseEnter', (event: any) => {
       console.log(event);
     });
 
-    api.addListener('displayNameChange', (event: any) => {
+    this.api!.addListener('displayNameChange', (event: any) => {
       console.log(event);
     });
+
+    this.api!.getDeploymentInfo().then((deploymentInfo: any) => {
+      console.log(deploymentInfo);
+    });
+  }
+
+  toggleVideoDevice() {
+    if(this.api) {
+      this.api.executeCommand('toggleVideo');
+    }
   }
 }
