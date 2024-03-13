@@ -18,11 +18,23 @@ export class AppComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     const options = {
       roomName: 'MedicalScanJitsi',
-      width: 700,
-      height: 700,
+      width: 900,
+      height: 600,
       parentNode: document.getElementById('meet'),
       lang: 'hu'
     }
     const api = new JitsiMeetExternalAPI(this.domain, options);
+
+    api.addListener('browserSupport', (status: any) => {
+      console.log(status);
+    });
+
+    api.addListener('mouseEnter', (event: any) => {
+      console.log(event);
+    });
+
+    api.addListener('displayNameChange', (event: any) => {
+      console.log(event);
+    });
   }
 }
